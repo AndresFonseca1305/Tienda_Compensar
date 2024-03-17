@@ -10,7 +10,7 @@ public class Empleado {
     private int id;
 
     @Column(name = "nombre")
-    private String name;
+    private String nombre;
 
     @Column(name = "numero_documento")
     private String numeroDocumento;
@@ -27,9 +27,8 @@ public class Empleado {
     public Empleado() {
     }
 
-    public Empleado(int id, String name, String numeroDocumento, int edad, String jornada, int tiempoLaborado) {
-        this.id = id;
-        this.name = name;
+    public Empleado(String nombre, String numeroDocumento, int edad, String jornada, int tiempoLaborado) {
+        this.nombre = nombre;
         this.numeroDocumento = numeroDocumento;
         this.edad = edad;
         this.jornada = jornada;
@@ -44,12 +43,12 @@ public class Empleado {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getNumeroDocumento() {
