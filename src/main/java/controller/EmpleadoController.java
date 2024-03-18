@@ -24,4 +24,20 @@ public class EmpleadoController {
     public List<Empleado> obtenerEmpleados() {
         return empleadoDAO.listarEmpleados();
     }
+
+    public Empleado obtenerEmpleadoPorDocumento(String numeroDocumento) {
+        return empleadoDAO.obtenerEmpleadoPorDocumento(numeroDocumento);
+    }
+
+    public void borrarEmpleado(String numeroDocumento) {
+        empleadoDAO.borrarEmpleado(numeroDocumento);
+    }
+
+    public void actualizarEmpleado(String numeroDocumento, String nombre, int edad, String jornada, int tiempoLaborado) {
+        empleadoDAO.actualizarEmpleado(numeroDocumento, nombre, edad, jornada, tiempoLaborado);
+    }
+
+    public void close() {
+        em.close();
+    }
 }

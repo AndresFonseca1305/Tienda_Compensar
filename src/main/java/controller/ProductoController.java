@@ -26,4 +26,11 @@ public class ProductoController {
        return productoDAO.listarProductos();
     }
 
+    public void borrarProducto(Integer id) {
+        productoDAO.borrarProducto(id);
+    }
+
+    public void actualizarProducto(Integer id, String nombre, String tipo, int unidades, double precio) {
+        productoDAO.actualizarProducto(id, nombre, tipo, unidades, precio);
+    }
 }

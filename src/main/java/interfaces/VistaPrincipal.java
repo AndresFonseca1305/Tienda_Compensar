@@ -6,6 +6,7 @@ import model.Empleado;
 import model.Producto;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -21,9 +22,10 @@ public class VistaPrincipal extends JFrame {
 
     public VistaPrincipal() {
         setTitle("Vista Principal");
-        setSize(800, 600);
+        setSize(1000, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
 
         empleadoController = new EmpleadoController();
         productoController = new ProductoController();
@@ -32,10 +34,11 @@ public class VistaPrincipal extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(new EmptyBorder(10, 10, 0, 10));
 
         // Crear los modelos de tabla
-        DefaultTableModel modeloEmpleados = new DefaultTableModel(new Object[]{"Nombre", "Identificacion", "Edad", "Jornada", "Tiempo Laborado"}, 0);
-        DefaultTableModel modeloProductos = new DefaultTableModel(new Object[]{"Id", "Nombre", "Tipo", "Cantidad", "Valor Unitario"}, 0);
+        DefaultTableModel modeloEmpleados = new DefaultTableModel(new Object[]{"Nombre", "Identificacion", "Edad", "Jornada", "Tiempo Laborado", "Descuento en Tiendas", "Descuento en Centros Recreacionales"}, 0);
+        DefaultTableModel modeloProductos = new DefaultTableModel(new Object[]{"Id", "Nombre", "Tipo", "Cantidad", "Valor Unitario", "Valor IVA", "Valor Total"}, 0);
 
         // Crear las tablas con los modelos
         tablaEmpleados = new JTable(modeloEmpleados);
@@ -44,6 +47,7 @@ public class VistaPrincipal extends JFrame {
         // Configurar las tablas para mostrar un máximo de 5 filas a la vez
         tablaEmpleados.setPreferredScrollableViewportSize(new Dimension(tablaEmpleados.getPreferredSize().width, tablaEmpleados.getRowHeight() * 5));
         tablaProductos.setPreferredScrollableViewportSize(new Dimension(tablaProductos.getPreferredSize().width, tablaProductos.getRowHeight() * 5));
+
 
         // Crear las etiquetas
         JLabel etiquetaEmpleados = new JLabel("Empleados");
@@ -59,6 +63,7 @@ public class VistaPrincipal extends JFrame {
         panel.add(new JScrollPane(tablaProductos));
 
         actualizarTablaEmpleados();
+        actualizarTablaProductos();
 
         // Crear los botones
         JButton botonRegistroEmpleado = new JButton("Registrar Empleado");
@@ -73,20 +78,137 @@ public class VistaPrincipal extends JFrame {
             registroProducto.setVisible(true);
         });
 
+        JButton borrarButton = new JButton("Borrar Empleado");
+        borrarButton.addActionListener(e -> {
+            int filaSeleccionada = tablaEmpleados.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                String numeroDocumento = (String) tablaEmpleados.getValueAt(filaSeleccionada, 1); // Asume que el número de documento es la segunda columna
+                empleadoController.borrarEmpleado(numeroDocumento);
+                actualizarTablaEmpleados();
+            }
+        });
+
+        JButton editarButton = new JButton("Editar Empleado");
+        editarButton.addActionListener(e -> {
+            int filaSeleccionada = tablaEmpleados.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                String numeroDocumento = (String) tablaEmpleados.getValueAt(filaSeleccionada, 1); // Asume que el número de documento es la segunda columna
+                String nombre = (String) tablaEmpleados.getValueAt(filaSeleccionada, 0);
+                int edad = (int) tablaEmpleados.getValueAt(filaSeleccionada, 2);
+                String jornada = (String) tablaEmpleados.getValueAt(filaSeleccionada, 3);
+                int tiempoLaborado = (int) tablaEmpleados.getValueAt(filaSeleccionada, 4);
+
+                JTextField campoNombre = new JTextField(nombre);
+                JTextField campoEdad = new JTextField(String.valueOf(edad));
+                JComboBox<String> campoJornada = new JComboBox<>(new String[]{"Diurno", "Nocturno"});
+                campoJornada.setSelectedItem(jornada);
+                JTextField campoTiempoLaborado = new JTextField(String.valueOf(tiempoLaborado));
+
+                Object[] campos = {
+                        "Nombre:", campoNombre,
+                        "Edad:", campoEdad,
+                        "Jornada:", campoJornada,
+                        "Tiempo laborado:", campoTiempoLaborado
+                };
+
+                int opcion = JOptionPane.showConfirmDialog(null, campos, "Editar Empleado", JOptionPane.OK_CANCEL_OPTION);
+
+                if (opcion == JOptionPane.OK_OPTION) {
+                    nombre = campoNombre.getText();
+                    edad = Integer.parseInt(campoEdad.getText());
+                    jornada = (String) campoJornada.getSelectedItem();
+                    tiempoLaborado = Integer.parseInt(campoTiempoLaborado.getText());
+
+                    empleadoController.actualizarEmpleado(numeroDocumento, nombre, edad, jornada, tiempoLaborado);
+                    actualizarTablaEmpleados();
+                }
+            }
+        });
+
+        // Crear el botón "Refrescar"
+        JButton botonRefrescar = new JButton("Refrescar");
+        botonRefrescar.addActionListener(e -> actualizarTablaEmpleados());
+        botonRefrescar.addActionListener(e -> actualizarTablaProductos());
+
+        JButton borrarProductoButton = new JButton("Borrar Producto");
+        borrarProductoButton.addActionListener(e -> {
+            int filaSeleccionada = tablaProductos.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                Integer id = (Integer) tablaProductos.getValueAt(filaSeleccionada, 0); // Asume que el número de documento es la segunda columna
+                productoController.borrarProducto(id);
+                actualizarTablaProductos();
+            }
+        });
+
+        JButton editarProductoButton = new JButton("Editar Producto");
+        editarProductoButton.addActionListener(e -> {
+            int filaSeleccionada = tablaProductos.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                Integer id = (Integer) tablaProductos.getValueAt(filaSeleccionada, 0);
+                String nombre = (String) tablaProductos.getValueAt(filaSeleccionada, 1);
+                String tipo = (String) tablaProductos.getValueAt(filaSeleccionada, 2);
+                int unidades = (int) tablaProductos.getValueAt(filaSeleccionada, 3);
+                double precio = (double) tablaProductos.getValueAt(filaSeleccionada, 4);
+
+                JTextField campoNombre = new JTextField(nombre);
+                JComboBox<String> campoTipo = new JComboBox<>(new String[]{"Aseo", "Papeleria", "Viveres", "Mascotas", "Otros"});
+                campoTipo.setSelectedItem(tipo);
+                JTextField campoUnidades = new JTextField(String.valueOf(unidades));
+                JTextField campoPrecio = new JTextField(String.valueOf(precio));
+
+                Object[] campos = {
+                        "Nombre:", campoNombre,
+                        "Tipo:", campoTipo,
+                        "Unidades:", campoUnidades,
+                        "Precio:", campoPrecio
+                };
+
+                int opcion = JOptionPane.showConfirmDialog(null, campos, "Editar Producto", JOptionPane.OK_CANCEL_OPTION);
+
+                if (opcion == JOptionPane.OK_OPTION) {
+                    nombre = campoNombre.getText();
+                    tipo = (String) campoTipo.getSelectedItem();
+                    unidades = Integer.parseInt(campoUnidades.getText());
+                    precio = Double.parseDouble(campoPrecio.getText());
+
+                    productoController.actualizarProducto(id, nombre, tipo, unidades, precio);
+                    actualizarTablaProductos();
+                }
+            }
+        });
+
+
+
         // Añadir los botones al panel
         JPanel panelBotones = new JPanel();
         panelBotones.add(botonRegistroEmpleado);
         panelBotones.add(botonRegistroProducto);
+        panelBotones.add(borrarButton);
+        panelBotones.add(editarButton);
+        panelBotones.add(botonRefrescar);
+        panelBotones.add(borrarProductoButton);
+        panelBotones.add(editarProductoButton);
 
         panel.add(panelBotones);
 
+
+
+
+
+
+
+
         add(panel);
+
+
+
     }
 
     public void actualizarTablaEmpleados() {
         DefaultTableModel modelo = (DefaultTableModel) tablaEmpleados.getModel();
         modelo.setRowCount(0); // Borra los registros existentes
 
+        // Asegúrate de que estás obteniendo los datos más recientes de la base de datos
         List<Empleado> empleados = empleadoController.obtenerEmpleados();
         for (Empleado empleado : empleados) {
             Object[] fila = new Object[]{
@@ -94,7 +216,9 @@ public class VistaPrincipal extends JFrame {
                     empleado.getNumeroDocumento(),
                     empleado.getEdad(),
                     empleado.getJornada(),
-                    empleado.getTiempoLaborado()
+                    empleado.getTiempoLaborado(),
+                    empleado.getDescuentoTienda()*100 + "%",
+                    empleado.getDescuentoCentroRecreacional()*100 + "%"
             };
             modelo.addRow(fila);
         }
@@ -110,7 +234,9 @@ public class VistaPrincipal extends JFrame {
                     producto.getNombre(),
                     producto.getTipo(),
                     producto.getNumeroUnidades(),
-                    producto.getValorUnitario()
+                    producto.getValorUnitario(),
+                    producto.getIva(),
+                    producto.getValorTotal()
             };
             modelo.addRow(fila);
         }

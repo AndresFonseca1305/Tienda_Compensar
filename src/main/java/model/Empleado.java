@@ -12,7 +12,7 @@ public class Empleado {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "numero_documento")
+    @Column(name = "numero_documento", unique = true)
     private String numeroDocumento;
 
     @Column(name = "edad")
@@ -24,6 +24,12 @@ public class Empleado {
     @Column(name = "tiempo_laborado")
     private int tiempoLaborado;
 
+    @Column(name = "descuento_tienda", nullable = true)
+    private Double descuentoTienda;
+
+    @Column(name = "descuento_centro_recreacional", nullable = true)
+    private Double descuentoCentroRecreacional;
+
     public Empleado() {
     }
 
@@ -33,6 +39,17 @@ public class Empleado {
         this.edad = edad;
         this.jornada = jornada;
         this.tiempoLaborado = tiempoLaborado;
+        // Establecer los descuentos basados en el tiempo laborado
+        if (tiempoLaborado < 1) {
+            this.descuentoTienda = 0.15;
+            this.descuentoCentroRecreacional = 0.20;
+        } else if (tiempoLaborado >= 1 && tiempoLaborado <= 5) {
+            this.descuentoTienda = 0.30;
+            this.descuentoCentroRecreacional = 0.30;
+        } else if (tiempoLaborado > 5) {
+            this.descuentoTienda = 0.50;
+            this.descuentoCentroRecreacional = 0.60;
+        }
     }
 
     public int getId() {
@@ -81,5 +98,21 @@ public class Empleado {
 
     public void setTiempoLaborado(int tiempoLaborado) {
         this.tiempoLaborado = tiempoLaborado;
+    }
+
+    public double getDescuentoTienda() {
+        return descuentoTienda;
+    }
+
+    public void setDescuentoTienda(double descuentoTienda) {
+        this.descuentoTienda = descuentoTienda;
+    }
+
+    public double getDescuentoCentroRecreacional() {
+        return descuentoCentroRecreacional;
+    }
+
+    public void setDescuentoCentroRecreacional(double descuentoCentroRecreacional) {
+        this.descuentoCentroRecreacional = descuentoCentroRecreacional;
     }
 }

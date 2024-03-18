@@ -22,6 +22,12 @@ public class Producto {
     @Column(name = "valor_unitario")
     private double valorUnitario;
 
+    @Column(name = "iva")
+    private double iva;
+
+    @Column(name = "valor_total")
+    private double valorTotal;
+
     public Producto() {
     }
 
@@ -30,6 +36,25 @@ public class Producto {
         this.tipo = tipo;
         this.numeroUnidades = numeroUnidades;
         this.valorUnitario = valorUnitario;
+        // Establecer el IVA basado en el tipo de producto
+        switch (tipo.toLowerCase()) {
+            case "aseo":
+                this.iva = valorUnitario * 0.19;
+                break;
+            case "papeleria":
+                this.iva = valorUnitario * 0.09;
+                break;
+            case "viveres":
+                this.iva = valorUnitario * 0.15;
+                break;
+            case "mascotas":
+                this.iva = valorUnitario * 0.16;
+                break;
+            default:
+                this.iva = valorUnitario * 0.10;
+                break;
+        }
+        this.valorTotal = valorUnitario + iva;
     }
 
     public int getId() {
@@ -70,5 +95,21 @@ public class Producto {
 
     public void setValorUnitario(double valorUnitario) {
         this.valorUnitario = valorUnitario;
+    }
+
+    public double getIva() {
+        return iva;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }
