@@ -37,6 +37,12 @@ public class EmpleadoController {
         empleadoDAO.actualizarEmpleado(numeroDocumento, nombre, edad, jornada, tiempoLaborado);
     }
 
+    public long contarEmpleadosPorJornada(String jornada) {
+        return em.createQuery("SELECT COUNT(e) FROM Empleado e WHERE e.jornada = :jornada", Long.class)
+                .setParameter("jornada", jornada)
+                .getSingleResult();
+    }
+
     public void close() {
         em.close();
     }

@@ -177,7 +177,19 @@ public class VistaPrincipal extends JFrame {
             }
         });
 
+        // Crear el botón "Gráfico Empleados"
+        JButton botonGraficoEmpleados = new JButton("Gráfico Empleados");
+        botonGraficoEmpleados.addActionListener(e -> {
+            GraficoEmpleados graficoEmpleados = new GraficoEmpleados();
+            graficoEmpleados.setVisible(true);
+        });
 
+        // Crear el botón "Gráfico Ventas"
+        JButton botonGraficoVentas = new JButton("Gráfico Ventas");
+        botonGraficoVentas.addActionListener(e -> {
+            GraficoVentas graficoVentas = new GraficoVentas();
+            graficoVentas.setVisible(true);
+        });
 
         // Añadir los botones al panel
         JPanel panelBotones = new JPanel();
@@ -188,19 +200,12 @@ public class VistaPrincipal extends JFrame {
         panelBotones.add(botonRefrescar);
         panelBotones.add(borrarProductoButton);
         panelBotones.add(editarProductoButton);
+        panelBotones.add(botonGraficoEmpleados);
+        panelBotones.add(botonGraficoVentas);
 
         panel.add(panelBotones);
 
-
-
-
-
-
-
-
         add(panel);
-
-
 
     }
 
