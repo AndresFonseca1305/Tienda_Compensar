@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GraficoVentas extends JFrame {
-
+//////////////////////////////////////////////////////////////////////////////////
     public GraficoVentas() {
         setTitle("Gráfico de Ventas de Productos");
         setSize(600, 400);
@@ -37,4 +37,5 @@ public class GraficoVentas extends JFrame {
         // Añadir el panel del gráfico al JFrame
         add(chartPanel, BorderLayout.CENTER);
     }
+//////////////////////////////////////////////////////////////////////////////////
 }

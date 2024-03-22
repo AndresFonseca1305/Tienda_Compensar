@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class RegistroProducto extends JFrame {
+    //////////////////////////////////////////////////////////////////////////////////
     private JTextField nombreField;
     private JComboBox<String> tipoProductoBox;
     private JTextField numeroUnidadesField;
@@ -57,4 +58,5 @@ public class RegistroProducto extends JFrame {
 
         add(panel);
     }
+    //////////////////////////////////////////////////////////////////////////////////
 }

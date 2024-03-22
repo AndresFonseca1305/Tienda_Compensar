@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class RegistroEmpleado extends JFrame {
+    //////////////////////////////////////////////////////////////////////////////////
     private JTextField nombreField;
     private JTextField identificacionField;
     private JTextField edadField;
@@ -63,4 +64,5 @@ public class RegistroEmpleado extends JFrame {
 
         add(panel);
     }
+    //////////////////////////////////////////////////////////////////////////////////
 }

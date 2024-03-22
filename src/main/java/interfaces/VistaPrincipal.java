@@ -19,7 +19,7 @@ public class VistaPrincipal extends JFrame {
     private EmpleadoController empleadoController;
 
     private ProductoController productoController;
-
+///////////////////////////////////////////////////////////////////////////////////////////////
     public VistaPrincipal() {
         setTitle("Vista Principal");
         setSize(1000, 500);
@@ -208,7 +208,7 @@ public class VistaPrincipal extends JFrame {
         add(panel);
 
     }
-
+/////////////////////////////////////////////////
     public void actualizarTablaEmpleados() {
         DefaultTableModel modelo = (DefaultTableModel) tablaEmpleados.getModel();
         modelo.setRowCount(0); // Borra los registros existentes

@@ -113,7 +113,7 @@ public class Inicio extends JFrame {
         // Hacer visible el JFrame
         setVisible(true);
     }
-
+//////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
         new Inicio();
     }

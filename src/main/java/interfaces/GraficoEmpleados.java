@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class GraficoEmpleados extends JFrame {
     private EmpleadoController empleadoController;
-
+//////////////////////////////////////////////////////////////////////////////////
     public GraficoEmpleados() {
         empleadoController = new EmpleadoController();
 
@@ -52,4 +52,5 @@ public class GraficoEmpleados extends JFrame {
         System.out.println("Empleados no diurnos: " + empleadoController.contarEmpleadosPorJornada("Diurno"));
         System.out.println("Empleados nocturnos: " + empleadoController.contarEmpleadosPorJornada("Nocturno"));
     }
+    //////////////////////////////////////////////////////////////////////////////////
 }
